@@ -14,7 +14,9 @@ class StatsResourceTest {
           .`when`().get("/api/stats")
           .then()
              .statusCode(200)
-             .body(`is`("hello"))
+             .body("messages", `is`(0))
+             .body("msgPerSec", `is`(0.0f))
+             .body("users", `is`(0))
     }
 
 }

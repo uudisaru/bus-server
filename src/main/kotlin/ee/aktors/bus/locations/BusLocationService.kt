@@ -1,5 +1,6 @@
 package ee.aktors.bus.locations
 
+import ee.aktors.bus.config.RedisConfiguration
 import io.smallrye.mutiny.Multi
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor
 import io.vertx.core.AsyncResult
@@ -15,15 +16,28 @@ import javax.enterprise.context.ApplicationScoped
 
 
 @ApplicationScoped
-class BusLocationService(val vertx: Vertx) {
+class BusLocationService(val vertx: Vertx, final val redisConfiguration: RedisConfiguration) {
     private val log: Logger = LoggerFactory.getLogger(BusLocationService::class.java)
     private val maxReconnectRetries = 16
+
     private val options: RedisOptions = RedisOptions()
     private val stream: BroadcastProcessor<String>;
 
     private var client: RedisConnection? = null
 
     init {
+
+        val host = redisConfiguration.host.orElse("localhost")
+        val port = redisConfiguration.port.orElse(6379)
+        val username = redisConfiguration.username.orElse("")
+        var auth = "";
+        redisConfiguration.password.ifPresent {
+            auth = "${username ?: ""}:${it}@"
+        }
+
+        options.endpoints = listOf("redis://${auth}${host}:${port}")
+        println(options.endpoints[0])
+
         createRedisClient(Handler {
             if (it.succeeded()) {
                 log.info("Connected to Redis")

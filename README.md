@@ -1,46 +1,22 @@
-# bus-publisher project
+# Bus location server
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+The service publishes bus locations to web clients via HTTP Server sent events.
+The service is a part of Docker demo - see (bus-app)[https://github.com/uudisaru/bus-app] for complete application.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+This project uses Quarkus web and vertx reactive frameworks and is implemented in Kotlin programming language.
 
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
+
 ```
 ./mvnw quarkus:dev
 ```
 
-## Packaging and running the application
+## Building Docker image
 
-The application can be packaged using `./mvnw package`.
-It produces the `bus-publisher-1.0-SNAPSHOT-runner.jar` file in the `/target` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
+Docker image is built using quarkus Jib maven plugin:
 
-The application is now runnable using `java -jar target/bus-publisher-1.0-SNAPSHOT-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: `./mvnw package -Pnative`.
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
-
-You can then execute your native executable with: `./target/bus-publisher-1.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
-
-
-# Creating the project
-
-```shell script
-mvn io.quarkus:quarkus-maven-plugin:1.6.1.Final:create \
-    -DprojectGroupId=ee.aktors \
-    -DprojectArtifactId=bus-publisher \
-    -DclassName="ee.aktors.bus.StatsResource" \
-    -Dpath="/api/stats" \
-    -Dextensions="kotlin,resteasy-mutiny,resteasy-jsonb"
-mvn io.quarkus:quarkus-maven-plugin:1.6.1.Final:add-extensions \ 
-    -Dextensions=vertx
-mvn io.quarkus:quarkus-maven-plugin:1.6.1.Final:add-extensions \ 
-    -Dextensions=vertx
+```bash
+$ ./build.sh
 ```
