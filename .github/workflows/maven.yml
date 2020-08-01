@@ -19,4 +19,10 @@ jobs:
       with:
         java-version: 1.11
     - name: Build with Maven
-      run: mvn clean package --file pom.xml -Dquarkus.container-image.build=true
+      run: mvn clean package --file pom.xml -Dquarkus.container-image.build=true -Dquarkus.container-image.additional-tags=latest,${GITHUB_RUN_NUMBER}
+    - name: Login to DockerHub
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Push the image with version number
+      run: docker push trtd/bus-server:${GITHUB_RUN_NUMBER}
+    - name: Push the latest image
+      run: docker push trtd/bus-server:latest
