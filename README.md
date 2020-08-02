@@ -1,5 +1,7 @@
 # Bus location server
 
+![Java CI with Maven](https://github.com/uudisaru/bus-server/workflows/Java%20CI%20with%20Maven/badge.svg)
+
 The service publishes bus locations to web clients via HTTP Server sent events.
 The service is a part of Docker demo - see (bus-app)[https://github.com/uudisaru/bus-app] for complete application.
 
